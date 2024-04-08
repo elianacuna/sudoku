@@ -14,4 +14,17 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    }
+
+.textname {
+    border-radius: 10px;
+    width: 200px;
+    display: block;
+    margin: auto;
+    background-color: #ffffff;
 }
+
+.div2{
+    margin-top: 20px;
+}
+    
