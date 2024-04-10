@@ -1,0 +1,20 @@
+body{
+
+    background-color: #f1f5fc;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #123B89;
+    text-align: center;
+    font-size: 20px;
+}
+
+.blank {
+    background-color: #D3E3FF;
+}
