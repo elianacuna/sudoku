@@ -1,6 +1,20 @@
 <?php
 
+function generarSudoku() {
+    
+    if (isset($_POST['generar_tablero'])) {
+        // Lógica para generar un nuevo tablero de Sudoku y mostrarlo en pantalla
+        $sudoku = new SudokuGenetico();
+        $sudoku->generarTableroAleatorio();
+        $tablero = $sudoku->getTablero();
+    }
+    elseif (isset($_POST['resolver_sudoku'])){
+        echo 'hola';
+    }
+}
+
 class SudokuGenetico {
+    
     private $tablero;
     
     public function __construct() {
@@ -125,16 +139,24 @@ $tablero = $sudoku->getTablero();
 ?>
 
 <!DOCTYPE html>
-<html >
+<html>
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudoku</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/sudoku.css">
+
 </head>
+
 <body>
+
     <h1>Haber si me puedes ganar: </h1>
+
     <table>
+
         <?php for ($i = 0; $i < 9; $i++): ?>
             <tr>
                 <?php for ($j = 0; $j < 9; $j++): ?>
@@ -145,6 +167,20 @@ $tablero = $sudoku->getTablero();
                 <?php endfor; ?>
             </tr>
         <?php endfor; ?>
+
     </table>
+
+    <form action="" method="post">
+        
+        <div class="d-grid gap-2 d-md-block topcss">
+            <button class="btn btn-primary" name="generar_tablero" type="submit">Generar tablero</button>
+            <button class="btn btn-outline-success" name="resolver_sudoku" type="submit">Resolver</button>
+        </div>    
+
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </body>
+
 </html>

@@ -5,6 +5,7 @@ body{
 
 table {
     border-collapse: collapse;
+    margin-left: 20px;
 }
 
 td {
@@ -17,4 +18,13 @@ td {
 
 .blank {
     background-color: #D3E3FF;
+}
+
+.topcss{
+    margin-top: 50px;
+    margin-left: 20px;
+}
+
+.title{
+    margin-left: 20px;
 }
