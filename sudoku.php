@@ -8,7 +8,7 @@ function generarSudoku() {
         $sudoku->generarTableroAleatorio();
         $tablero = $sudoku->getTablero();
     }
-    elseif (isset($_POST['resolver_sudoku'])){
+    if (isset($_POST['resolver_sudoku'])){
         echo 'hola';
     }
 }
@@ -188,6 +188,7 @@ $tablero = $sudoku->getTablero();
         <div class="d-grid gap-2 d-md-block topcss">
             <button class="btn btn-primary" name="generar_tablero" type="submit">Generar tablero</button>
             <button class="btn btn-outline-success" name="resolver_sudoku" type="submit">Resolver</button>
+            
         </div>    
 
     </form>
