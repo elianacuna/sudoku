@@ -1,61 +1,65 @@
 <?php
 
-function generarSudoku() {
-    
-    if (isset($_POST['generar_tablero'])) {
+if (isset($_POST['Jugar'])) {
+    $sudoku = new SudokuGenetico();
+    $sudoku->generarTableroAleatorio();
+    $tablero = $sudoku->getTablero();
 
-        $sudoku = new SudokuGenetico();
-        $sudoku->generarTableroAleatorio();
-        $tablero = $sudoku->getTablero();
-    }
-    if (isset($_POST['resolver_sudoku'])){
-        echo 'hola';
+    $aptitud = $sudoku->calcularAptitud();
+
+    if ($aptitud == 81) {
+        echo "El tablero Sudoku está completo y correcto.";
+    } else {
+        echo "El tablero Sudoku no está completo o tiene errores.";
     }
 }
 
 class SudokuGenetico {
-    
-    private $tablero;
-    
 
+    // Variable para el tablero de juego
+    private $tablero;
+
+    // Constructor de la clase
     public function __construct() {
-        
-        // Creando el tablero vacio
+
+        //Creando el array de 9*9 llenos de ceros
         $this->tablero = array_fill(0, 9, array_fill(0, 9, 0));
     }
-    
+
+    // Genera un tablero sudoku aleatorio
     public function generarTableroAleatorio() {
-        
-        // Llenamos la diagonal principal
+       
+        // Llena la diagonal principal con números aleatorios
         for ($i = 0; $i < 9; $i += 3) {
             $this->llenarRegion($i, $i);
         }
-    
-        // Permutar números en cada fila, columna y región
+
+        // Permuta las filas, columnas y regiones del tablero
         $this->permutarFilas();
         $this->permutarColumnas();
         $this->permutarRegiones();
     }
-    
-    private function llenarRegion($startRow, $startCol) {
-        
-        //Llenamos las regiones de las filas y columnas 9X9
+
+    // Llena una región 3x3 del tablero con números aleatorios
+    private function llenarRegion($InicioFila, $InciaCol) {
         $nums = range(1, 9);
         shuffle($nums);
         $index = 0;
-        for ($i = $startRow; $i < $startRow + 3; $i++) {
-            for ($j = $startCol; $j < $startCol + 3; $j++) {
+        for ($i = $InicioFila; $i < $InicioFila + 3; $i++) {
+            for ($j = $InciaCol; $j < $InciaCol + 3; $j++) {
                 $this->tablero[$i][$j] = $nums[$index++];
             }
         }
     }
-    
+
+    // Permuta las filas del tablero de forma aleatoria
     private function permutarFilas() {
         for ($i = 0; $i < 9; $i++) {
             shuffle($this->tablero[$i]);
         }
     }
-    
+
+    // Permuta las columnas del tablero de forma aleatoria
     private function permutarColumnas() {
         for ($j = 0; $j < 9; $j++) {
             $column = array_column($this->tablero, $j);
@@ -65,7 +69,8 @@ class SudokuGenetico {
             }
         }
     }
-    
+
+    // Permuta las regiones 3x3 del tablero de forma aleatoria
     private function permutarRegiones() {
         for ($i = 0; $i < 9; $i += 3) {
             for ($j = 0; $j < 9; $j += 3) {
@@ -73,31 +78,34 @@ class SudokuGenetico {
             }
         }
     }
-    
-    private function permutarRegion($startRow, $startCol) {
+
+    // Permuta una región 3x3 del tablero de forma aleatoria
+    private function permutarRegion($InicioFila, $InicioColum) {
         $nums = [];
-        for ($i = $startRow; $i < $startRow + 3; $i++) {
-            for ($j = $startCol; $j < $startCol + 3; $j++) {
+        for ($i = $InicioFila; $i < $InicioFila + 3; $i++) {
+            for ($j = $InicioColum; $j < $InicioColum + 3; $j++) {
                 $nums[] = $this->tablero[$i][$j];
             }
         }
         shuffle($nums);
         $index = 0;
-        for ($i = $startRow; $i < $startRow + 3; $i++) {
-            for ($j = $startCol; $j < $startCol + 3; $j++) {
+        for ($i = $InicioFila; $i < $InicioFila + 3; $i++) {
+            for ($j = $InicioColum; $j < $InicioColum + 3; $j++) {
                 $this->tablero[$i][$j] = $nums[$index++];
             }
         }
     }
-        public function calcularAptitud() {
+
+    // Calcula la aptitud del tablero
+    public function calcularAptitud() {
         $aptitud = 0;
-        
-        // Calcula aptitud por filas
+
+        // Calcula la aptitud por filas
         for ($i = 0; $i < 9; $i++) {
             $aptitud += $this->calcularAptitudGrupo($this->tablero[$i]);
         }
-        
-        // Calcula aptitud por columnas
+
+        // Calcula la aptitud por columnas
         for ($j = 0; $j < 9; $j++) {
             $columna = array();
             for ($i = 0; $i < 9; $i++) {
@@ -105,8 +113,8 @@ class SudokuGenetico {
             }
             $aptitud += $this->calcularAptitudGrupo($columna);
         }
-        
-        // Calcular aptitud por cuadrados de 3x3
+
+        // Calcula la aptitud por cuadrados de 3x3
         for ($i = 0; $i < 9; $i += 3) {
             for ($j = 0; $j < 9; $j += 3) {
                 $cuadrado = array();
@@ -118,12 +126,15 @@ class SudokuGenetico {
                 $aptitud += $this->calcularAptitudGrupo($cuadrado);
             }
         }
-        
+
         return $aptitud;
     }
-    
+
+    // Calcula la aptitud de un grupo (fila, columna o región)
     private function calcularAptitudGrupo($grupo) {
+        
         $apariciones = array_fill(1, 9, 0);
+        
         foreach ($grupo as $num) {
             if ($num != 0) {
                 $apariciones[$num]++;
@@ -131,17 +142,23 @@ class SudokuGenetico {
         }
         return array_sum($apariciones);
     }
-    
+
+    // Retorna el tablero generado
     public function getTablero() {
         return $this->tablero;
     }
 }
 
+// Crear una instancia de SudokuGenetico, generar un tablero aleatorio y obtenerlo
 $sudoku = new SudokuGenetico();
 $sudoku->generarTableroAleatorio();
 $tablero = $sudoku->getTablero();
 
+
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -183,11 +200,11 @@ $tablero = $sudoku->getTablero();
 
     </table>
 
+
     <form action="" method="post">
         
         <div class="d-grid gap-2 d-md-block topcss">
-            <button class="btn btn-primary" name="generar_tablero" type="submit">Generar tablero</button>
-            <button class="btn btn-outline-success" name="resolver_sudoku" type="submit">Resolver</button>
+            <button class="btn btn-primary" name="Jugar" type="submit">Comenzar juego</button>
             
         </div>    
 
