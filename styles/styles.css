@@ -1,0 +1,53 @@
+/* Estilos para los inputs */
+.inputCell {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Estilos para el botón */
+.buttonBtn {
+    margin-top: 20px;
+    background-color: #5473fd;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.buttonBtn:hover {
+    background-color: #3456c3;
+}
+
+/* Estilos para la tabla del Sudoku */
+table {
+    border-collapse: collapse;
+    font-family: Calibri, sans-serif;
+}
+
+colgroup,
+tbody {
+    border: solid medium;
+}
+
+td {
+    border: solid thin;
+    height: 1.4em;
+    width: 1.4em;
+    text-align: center;
+    padding: 0;
+}
+
+.filled-cell {
+    background-color: #5473fd;
+}
+
+.modified-cell {
+    background-color: lightgreen; /* Cambia el color de fondo de las celdas modificadas con la solución */
+}
